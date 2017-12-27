@@ -1,4 +1,4 @@
-#!groovy​
+#!groovy
 
 pipeline {
 	agent any
@@ -16,24 +16,73 @@ pipeline {
 				}
 			}
 		}
-
-		stage('Build') {
-			stage('BroadCom MIPS') {
-				steps {
-					sh 'cd src; ../freebsd-wifi-build/build/bin/build bcm-trx'
-				}
+		
+		stage('Build OnionOmega') {
+			steps {
+				sh 'cd src; ../freebsd-wifi-build/build/bin/build onionomega'
+				archiveArtifacts 'tftpboot/onionomega.factory.bin'
+				archiveArtifacts 'tftpboot/kernel.ONIONOMEGA'
+				archiveArtifacts 'img/mfsroot-onionomega.img.ulzma'
 			}
-			
-			stage('Onion Omega') {
-				steps {
-					sh 'cd src; ../freebsd-wifi-build/build/bin/build onionomega'
-				}
+		}
+		
+		stage('Build TPLink WR1043ND') {
+			steps {
+				sh 'cd src; ../freebsd-wifi-build/build/bin/build tl-wr1043nd'
+				archiveArtifacts 'tftpboot/tl-wr1043nd.factory.bin'
+				archiveArtifacts 'tftpboot/kernel.TP-WN1043ND'
+				archiveArtifacts 'img/mfsroot-tl-wr1043nd.img.ulzma'
 			}
+		}
+		
+		stage('Build TPLink WR1043NDv2') {
+			steps {
+				sh 'cd src; ../freebsd-wifi-build/build/bin/build tl-wr1043ndv2'
+				archiveArtifacts 'tftpboot/tl-wr1043ndv2.factory.bin'
+				archiveArtifacts 'tftpboot/kernel.TL-WR1043NDv2'
+				archiveArtifacts 'img/mfsroot-tl-wr1043ndv2.img.ulzma'
+			}
+		}
+		
+		stage('Build Carambola2') {
+			steps {
+				sh 'cd src; ../freebsd-wifi-build/build/bin/build carambola2'
+			}
+		}
 
-			stage('Ralink') {
-				steps {
-					sh 'cd src; ../freebsd-wifi-build/build/bin/build ralink'
-				}
+		stage('Build Buffalo Airstation WZR-300HP') {
+			steps {
+				sh 'cd src; ../freebsd-wifi-build/build/bin/build wzr300hp'
+			}
+		}
+		
+		stage('Build Buffalo Airstation WZR-HP-AG300H') {
+			steps {
+				sh 'cd src; ../freebsd-wifi-build/build/bin/build wzrhpag300h'
+			}
+		}
+		
+		stage('Build Engenius ENH-200') {
+			steps {
+				sh 'cd src; ../freebsd-wifi-build/build/bin/build enh200'
+			}
+		}
+		
+		stage('Build TPLink TL WDR3600') {
+			steps {
+				sh 'cd src; ../freebsd-wifi-build/build/bin/build tl-wdr3600'
+			}
+		}
+		
+		stage('Build fon2305e'){
+			steps {
+				sh 'cd src; ../freebsd-wifi-build/build/bin/build fon2305e'
+			}		
+		}
+		
+		stage('Build BroadCom') {
+			steps {
+				sh 'cd src; ../freebsd-wifi-build/build/bin/build bcm-trx'
 			}
 		}
 	}
