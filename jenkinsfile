@@ -1,0 +1,40 @@
+#!groovy​
+
+pipeline {
+	agent any
+	stages {
+		stage('Fetch / update SCMs') {
+			steps {
+				dir('src') {
+					git url: 'https://github.com/freebsd/freebsd.git'
+	    			}
+				dir('freebsd-wifi-build') {
+					git url: 'https://github.com/freebsd/freebsd-wifi-build.git'
+				}
+				dir('zrouter') {
+					git url: 'https://github.com/ZRouter/ZRouter.git'
+				}
+			}
+		}
+
+		stage('Build') {
+			stage('BroadCom MIPS') {
+				steps {
+					sh 'cd src; ../freebsd-wifi-build/build/bin/build bcm-trx'
+				}
+			}
+			
+			stage('Onion Omega') {
+				steps {
+					sh 'cd src; ../freebsd-wifi-build/build/bin/build onionomega'
+				}
+			}
+
+			stage('Ralink') {
+				steps {
+					sh 'cd src; ../freebsd-wifi-build/build/bin/build ralink'
+				}
+			}
+		}
+	}
+}
